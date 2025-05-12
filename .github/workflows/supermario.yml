@@ -52,4 +52,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
       
       - name: Deploy Super Mario
-        run: ansible-playbook -i ansible/inventory ansible/deploy-docker.yml
+        run: export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -i ansible/inventory ansible/deploy-docker.yml
