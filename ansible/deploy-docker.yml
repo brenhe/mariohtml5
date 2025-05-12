@@ -7,7 +7,7 @@
     - name: Deploy Super Mario
       docker_container:
         name: supermario
-        image: emerson4linux/supermario:latest
+        image: brenhe/mario4linux:latest
         state: started
         restart_policy: always
         ports:
