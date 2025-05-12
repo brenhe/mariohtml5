@@ -29,3 +29,27 @@ jobs:
           docker push emerson4linux/supermario:${{ github.run_id }}
           docker push emerson4linux/supermario:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    need: [build_and_push]
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalando Ansible
+        run: pip install ansible 
+
+      - name: Adicionando SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      
+      - name: Deploy Super Mario
+        run: ansible-playbook -i ansible/inventory ansible/deploy-docker.yml
