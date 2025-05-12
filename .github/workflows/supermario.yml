@@ -1,0 +1,26 @@
+name: Super Mario CI/CD
+
+on:
+  push:
+    branch:
+      - main
+
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/chckout@v3
+
+      - name: Login Docker Hub
+        run: | 
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+      
+      - name: Build da image
+        run: docker build -t emerson4linux/supermario:${{ github.run_id }} .
+
+      - name: Push da imagem para o Docker Hub
+        run: docker push emerson4linux/supermario:${{ github.run_id }}
+
