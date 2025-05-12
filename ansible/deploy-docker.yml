@@ -1,12 +1,12 @@
 ---
 - name: Deploy Super Mario via Github Actions
-  hosts: supermario
+  hosts: mario4linux
   become: true
 
   tasks:
     - name: Deploy Super Mario
       docker_container:
-        name: supermario
+        name: mario4linux
         image: brenhe/mario4linux:latest
         state: started
         restart_policy: always
