@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    need: [build_and_push]
+    needs: [build_and_push]
 
     steps:
       - name: Checkout do código
