@@ -22,5 +22,7 @@ jobs:
         run: docker build -t emerson4linux/supermario:${{ github.run_id }} .
 
       - name: Push da imagem para o Docker Hub
-        run: docker push emerson4linux/supermario:${{ github.run_id }}
+        run: | 
+          docker push emerson4linux/supermario:${{ github.run_id }}
+          docker push emerson4linux/supermario:latest
 
