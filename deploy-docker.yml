@@ -1,0 +1,14 @@
+---
+- name: Deploy Super Mario via Github Actions
+  hosts: supermario
+  become: true
+
+  tasks:
+    - name: Deploy Super Mario
+      docker_container:
+        name: supermario
+        image: emerson4linux/supermario:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "8600:8080"

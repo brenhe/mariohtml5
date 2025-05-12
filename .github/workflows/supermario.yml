@@ -19,8 +19,37 @@ jobs:
           echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
       
       - name: Build da image
-        run: docker build -t brenhe/mario4linux:${{ github.run_id }} .
+        run: |
+          docker build -t brenhe/mario4linux:${{ github.run_id }} .
+          docker tag brenhe/mario4linux:${{ github.run_id }} brenhe/mario4linux:latest
+
 
       - name: Push da imagem para o Docker Hub
-        run: docker push brenhe/mario4linux:${{ github.run_id }}
+        run: | 
+          docker push brenhe/mario4linux:${{ github.run_id }}
+          docker push brenhe/mario4linux:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build_and_push]
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalando Ansible
+        run: pip install ansible 
+
+      - name: Adicionando SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      
+      - name: Deploy Super Mario
+        run: export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -i ansible/inventory ansible/deploy-docker.yml
