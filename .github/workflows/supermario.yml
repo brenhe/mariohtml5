@@ -19,8 +19,8 @@ jobs:
           echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
       
       - name: Build da image
-        run: docker build -t emerson4linux/supermario:${{ github.run_id }} .
+        run: docker build -t brenhe/mario4linux:${{ github.run_id }} .
 
       - name: Push da imagem para o Docker Hub
-        run: docker push emerson4linux/supermario:${{ github.run_id }}
+        run: docker push brenhe/mario4linux:${{ github.run_id }}
 
